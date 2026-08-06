@@ -107,3 +107,41 @@ public:
     }
 }
 ```
+
+
+while内で別の処理をしているif文以下をwhileから抜けて行うように指摘を受けた。
+Listが1つだったケースに対応しないといけなかったため記述が多くなった
+```c++
+class Solution {
+    public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if (slow == fast) {
+                break;
+            }
+        }
+
+        if (head == nullptr || head->next == nullptr) {
+            return nullptr;
+        }
+
+        if (slow != fast) {
+            return nullptr;
+        }
+
+        slow = head;
+        while (slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return slow;
+    }
+}
+}
+```
