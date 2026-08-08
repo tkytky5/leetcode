@@ -78,3 +78,28 @@ public:
         return head;
     }
 }
+
+
+step 4
+
+重複したノードをdeleteし忘れメモリリークを起こしている指摘を受け、deleteする
+
+```c++
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* node = head;
+
+        while (node && node->next) {
+            if (node->val == node->next->val) {
+                ListNode* duplicate = node->next;
+                node->next = node->next->next;
+                delete duplicate;
+            } else {
+                node = node->next;
+            }
+        }
+        return head;
+    }
+};
+```
