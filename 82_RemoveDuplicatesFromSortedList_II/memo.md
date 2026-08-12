@@ -84,3 +84,41 @@ public:
     }
 };
 ```
+
+
+step 3
+
+この関数内で、呼び出し側が確保したメモリをdeleteで解放するのは適切ではないとレビュー頂いた。
+プログラム実行中にメモリがどのように確保・解放されるか理解が浅いと感じた。
+```c++
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (!head || !head->next) {
+            return head;
+        }
+
+        ListNode* dummy = new ListNode();
+        dumm->next = head;
+        ListNode* current = head;
+        ListNode* previous = dummy;
+
+        while (current && current->next) {
+            if (current->val != current->next->val) {
+                current = current->next;
+                previous = previous->next;
+                continue;
+            }
+
+            while (current->next && current->val == current->next->val) {
+                current = current->next;
+            }
+
+            previous->next = current->next;
+            current = current->next;
+        }
+
+        return dummy->next;
+    }
+}
+```
