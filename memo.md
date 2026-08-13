@@ -123,10 +123,11 @@ using namespace std;
 class Solution {
 public:
     bool isValid(string s) {
-        map<char, char> pairs;
-        pairs['{'] = '}';
-        pairs['['] = ']';
-        pairs['('] = ')';
+        map<char, char> pairs = {
+            {'{', '}'},
+            {'[', ']'},
+            {'(', ')'},
+        };
 
         stack<char> open_brackets;
 
