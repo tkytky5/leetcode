@@ -106,3 +106,42 @@ public:
     }
 };
 ```
+
+step4
+
+何のためのスタックなのかを明示するように修正。
+stack -> openBrackets
+
+同じ処理は同じメソッドやコードで統一
+stack.size() == 0 -> stack.empty()
+
+```c++
+#include <stack>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isValid(string s) {
+        map<char, char> pairs;
+        pairs['{'] = '}';
+        pairs['['] = ']';
+        pairs['('] = ')';
+
+        stack<char> open_brackets;
+
+        for (char ch : s) {
+            if (pairs.contains(ch)) {
+                open_brackets.push(ch);
+                continue;
+            }
+            if (open_brackets.empty() || ch != pairs[open_brackets.top()]) {
+                return false;
+            }
+            open_brackets.pop();
+        }
+
+        return open_brackets.empty();
+    }
+};
+```
