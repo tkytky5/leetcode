@@ -79,7 +79,7 @@ public:
             int digit = sum % 10;
             carry = sum / 10;
 
-            ListNode* newNode = ListNode(digit);
+            ListNode* newNode =　new ListNode(digit);
             tail->next = newNode;
             tail = tail->next;
 
