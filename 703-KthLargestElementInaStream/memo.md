@@ -65,3 +65,42 @@ public:
     }
 };
 ```
+
+
+step 4
+
+GoogleのC++の記述スタイルを参考。
+    - 変数名はスネークケース
+    - クラスはpublicセクションから始める
+    - クラスのメンバー変数にはアンダースコアを付ける（関数内の変数と区別するため？）
+https://google.github.io/styleguide/cppguide.html#Variable_Names
+https://google.github.io/styleguide/cppguide.html#Declaration_Order
+
+ぶら下がり if 文は、バグの原因になり得るため避けた方がいいらしい。中括弧がないとコードが if 分の内外どちらかわかりにくいので読みにくくもなると思った。
+
+```c++
+class KthLargest {
+public:
+    KthLargest(int k, vector<int> nums) {
+        kth_largest_ = k;
+        for (int element : nums) {
+            largest_numbers_.push(element);
+            if (largest_numbers_.size() > kth_largest_)　{
+                largest_numbers_.pop();
+            }
+        }
+    }
+
+    int add(int val) {
+        largest_numbers_.push(val);
+        if (largest_numbers_.size() > kth_largest_) {
+            largest_numbers_.pop();
+        }
+        return largest_numbers_.top();
+    }
+
+private:
+    int kth_largest_;
+    priority_queue<int, vector<int>, greater<int>> largest_numbers_;
+};
+```
