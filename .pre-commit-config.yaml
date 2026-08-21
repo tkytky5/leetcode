@@ -1,0 +1,6 @@
+- repo: https://github.com/cpplint/cpplint
+  rev:  # cpplint version number or git tag
+  hooks:
+    - id: cpplint
+      args:
+        - --filter=-whitespace/line_length,-whitespace/parens
