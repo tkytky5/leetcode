@@ -73,3 +73,34 @@ public:
 	}
 };
 ```
+
+step 4
+
+step 1 で一回の for ループで完結させる方法が見つかったので参考にする。
+https://github.com/Apo-Matchbox/LeetCode_Practice/pull/23/changes
+
+unordered_map は要素数が少ない時 map よりもメモリ使用量が大きく、insert() も map よりも遅いらしい。
+https://github.com/Apo-Matchbox/LeetCode_Practice/pull/23#discussion_r2525525275
+
+nums のループ内で要素とインデックスを記録する。もしくは target - nums[i] が既出であればそれが補数なので現在の値のインデックスとその補数となる値のインデックスを返す。
+
+```c++
+class Solution {
+public:
+	vector<int> twoSum(vector<int> nums, int target) {
+		std::map<int, int> num_to_index;
+		
+		for (int i = 0; i < nums.size(); ++i) {
+			int complement = target - nums[i];
+
+			if (num_to_index.contains(complement)) {
+				return {i, num_to_index[complement]};
+			}
+			
+			num_to_index[nums[i]] = i;
+		}
+
+		return {};
+	}
+};
+```
