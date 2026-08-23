@@ -1,2 +1,4 @@
 megalinter-reports/
 *.megalinter-setup.bak
+
+.history
