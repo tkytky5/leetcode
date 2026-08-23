@@ -123,8 +123,6 @@ jobs:
           # ADD YOUR CUSTOM ENV VARIABLES HERE TO OVERRIDE VALUES OF
           # .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
 
-        ENABLE: CPP_CPPLINT
-        DISABLE_LINTERS: MARKDOWN_MARKDOWNLINT MARKDOWN_MARKDOWN_TABLE_FORMATTER
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
