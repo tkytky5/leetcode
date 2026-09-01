@@ -58,3 +58,27 @@ public:
 step 3
 
 3回連続10分以内に解く。
+
+
+step 4
+
+```c++
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        unordered_map<char, int> letter_to_frequency;
+
+        for (const char letter : s) {
+            letter_to_frequency[letter]++;
+        }
+
+        for (int i = 0; i < s.size(); ++i) {
+            if (letter_to_frequency[s[i]] == 1) {
+                return i
+            }
+        }
+
+        return -1;
+    }
+};
+```
