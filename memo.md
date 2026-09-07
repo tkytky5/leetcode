@@ -1,7 +1,7 @@
 step 1
 
 単純に配列を一つずつループし、各要素との組み合わせの合計が k と等しければカウント。
-最初、累積和が k を超えた、もしくは k と等しい時、それ以降の計算ステップを減らす目的でその時点で次のループに移動（break）していたが以降の値がマイナスだったら累積我が k と等しくなり得ることを考慮できていなかった。
+最初、累積和が k を超えた、もしくは k と等しい時、それ以降の計算ステップを減らす目的でその時点で次のループに移動（break）していたが、　以降の値がマイナスだったら累積和が k と等しくなり得ることを考慮できていなかった。
 制約をきちんと読むように気をつける。
 30分程で pass
 
@@ -39,3 +39,44 @@ public:
     }
 };
 ```
+
+
+step 2
+
+他の人の回答を見る。
+
+https://discord.com/channels/1084280443945353267/1206101582861697046/1208414507735453747
+
+理解できたような気がするしできてないような気もするがとりあえず言語化してみる。
+
+値の数だけ駅があり、値を標高とする。一駅ごとに標高差を記録していく。
+最初に標高 0 をカウントするのは地表が基準となるため。
+現在地の駅から標高差がちょうど k の場所に駅がある組み合わせを調べる。
+
+
+```cpp
+class Solution {
+public:
+    int subarraySum(vector<int> nums, int k) {
+        unordered_map<int, int> elevation_to_frequence;
+        int difference = 0;
+        int count = 0;
+        elevation_to_frequence.insert({0:1});
+        
+        for (const auto elevation : nums) {
+            difference += elevation;
+            if (elevation_to_frequence.contains(elevation - k)) {
+                count += elevation_to_frequence[elevation - k];
+            }
+
+            elevation_to_frequence[elevation] += 1;
+        }
+
+        return count;
+    }
+};
+```
+
+
+step 3
+3回連続10分以内に pass
