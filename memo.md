@@ -80,3 +80,25 @@ public:
 
 step 3
 3回連続10分以内に pass
+
+step 4
+バグ修正
+
+```cpp
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> elevation_to_frequency = {{0, 1}};
+        int sum = 0;
+        int difference = 0;
+
+        for (const auto elevation : nums) {
+            difference += elevation;
+            sum += elevation_to_frequency[difference - k];
+            elevation_to_frequency[difference]++;
+        }
+
+        return sum;
+    }
+};
+```
