@@ -164,3 +164,33 @@ public:
     }
 };
 ```
+
+再帰でも解いておく。
+記述量が少ないので書きやすい。
+
+```cpp
+class Solution {
+public:
+    /**
+     * struct TreeNode {
+     *     int val;
+     *     TreeNode *left;   
+     *     TreeNode *right;
+     *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+     *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+     *     TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+     * };
+     */
+
+    int maxDepth(TreeNode* root) {
+        if (!root) {
+            return 0;
+        }
+
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+    }
+};
+```
+
+step 3
+DFS、BFS、再帰でそれぞれ3回連続10分以内に pass
