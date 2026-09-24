@@ -95,3 +95,53 @@ public:
 
 ## step 3
 3回連続10分以内に pass
+
+## step 4
+- ダブルポインターで解く方法
+    https://discord.com/channels/1084280443945353267/1262688866326941718/1297934906189549599
+    https://github.com/irohafternoon/LeetCode/pull/26/changes#r2056392034
+
+    
+    ダブルポイントという発想自体がなかった。もう少し詳しく調べておきたい。
+    irohafternoon さんのコードを使わせてもらった。
+    再帰のようにスタックオーバーフローの心配をしなくても良さそう。それ以外にメリット（デメリット）があるのかはわからない。
+
+```cpp
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        std::queue<std::tuple<const TreeNode*, const TreeNode*, TreeNode**>> nodes_to_merge;
+        TreeNode* new_head = new TreeNode();
+        nodes_to_merge.emplace(root1, root2, &new_head);
+
+        while (!nodes_to_merge.empty()) {
+            auto [node1, node2, ptr_to_merged_node] = nodes_to_merge.front();
+            nodes_to_merge.pop();
+
+            if (!node1 && !node2) {
+                *ptr_to_merged_node = nullptr;
+                continue;
+            }
+            if (!node1) {
+                node1 = kSentinel;
+            }
+            if (!node2) {
+                node2 = kSentinel;
+            }
+
+            (*ptr_to_merged_node)->val = node1->val + node2->val;
+            (*ptr_to_merged_node)->left = new TreeNode();
+            nodes_to_merge.emplace(node1->left, node2->left, &((*ptr_to_merged_node)->left));
+            (*ptr_to_merged_node)->right = new TreeNode();
+            nodes_to_merge.emplace(node1->right, node2->right, &((*ptr_to_merged_node)->right));
+        }
+
+        return new_head;
+    }
+
+private:
+    static const TreeNode* const kSentinel;
+};
+
+const TreeNode* const Solution::kSentinel = new TreeNode(0);
+```
