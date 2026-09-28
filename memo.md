@@ -134,3 +134,48 @@ public:
 
 ## step 3
 3回連続 pass
+
+## step 4
+ダブルポインタを避けて、tuple を struct に変えた書き方。
+struct 名もう少しいい名前があるはずだが思いつかない。
+
+```c++
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        TreeNode* root = new TreeNode();
+        Node* node = new Node(root, 0, nums.size() - 1);
+        stack<Node*> nodes({node});
+
+        while (!nodes.empty()) {
+            auto node = nodes.top();
+            nodes.pop();
+            TreeNode* current_node = node->node;
+            int begin = node->begin;
+            int end = node->end;
+
+            int mid_index = (begin + end) / 2;
+            current_node->val = nums[mid_index];
+            if (begin <= mid_index - 1) {
+                current_node->left = new TreeNode();
+                Node* node_left = new Node(current_node->left, begin, mid_index - 1);
+                nodes.emplace(node_left);
+            }
+            if (mid_index + 1 <= end) {
+                current_node->right = new TreeNode();
+                Node* node_right = new Node(current_node->right, mid_index + 1, end);
+                nodes.emplace(node_right);
+            }
+        }
+
+        return root;
+    }
+
+private:
+    struct Node {
+        TreeNode* node;
+        int begin;
+        int end;
+    };
+};
+```
