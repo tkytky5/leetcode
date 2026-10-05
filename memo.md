@@ -106,4 +106,4 @@ public:
 ```
 
 ## step 3
-3 間連続 pass
+3 回連続 pass
