@@ -51,7 +51,7 @@ https://github.com/kazukiii/leetcode/pull/29/changes#diff-041340df4abb911ffef1f8
         - ベースポインタ： 8 bytes
     - 合計 40 bytes
 - 最大で 8000000 / 40 = 2 * 10^5 くらいは大丈夫そう
-- 制約はノード数が 10^4 なので、見積り場再起で書いても大丈夫
+- 制約はノード数が 10^4 なので、見積り上再帰で書いても大丈夫
 
 helper を呼び出す行が長いので改行。
 
@@ -84,3 +84,29 @@ private:
 
 step 3
 3 回連続 pass
+
+step 4 (レビューを元に修正し3回連続通す)
+
+C++11 以降では numeric_limits<long long> よりも　INT64_MAX の方が今風。
+
+```c++
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        return isValidBSTHelper(root, INT64_MIN, INT64_MAX);
+    }
+
+private:
+    bool isValidBSTHelper(TreeNode* node, long long lower, long long upper) {
+        if (!node) {
+            return true;
+        }
+
+        if (!(lower < node->val && node->val < upper)) {
+            return false;
+        }
+
+        return isValidBSTHelper(node->left, lower, node->val) && isValidBSTHelper(node->right, node->val, upper);
+    }
+};
+```
