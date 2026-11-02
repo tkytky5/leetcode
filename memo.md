@@ -51,7 +51,7 @@ private:
 10分経過したので答えを見る。
 
 - https://github.com/chryschron/codings/pull/30
-    > std::numeric_limits::min() を使用することをお勧めいたします。
+    - > std::numeric_limits::min() を使用することをお勧めいたします。
     - 一つ前までの合計値が正の値であれば現在の要素を加算（部分配列の要素と）する。そうでなければ現在の値を合計値（部分配列の先頭）とする。subarray_sums はその時点までの合計値を表すので、その中から最も大きい要素が最大値の部分配列であり、最大値を表す。
     - Space complexity: O(n)
         - 
@@ -82,31 +82,64 @@ public:
 
 コメント集を読む。
 - https://discord.com/channels/1084280443945353267/1206101582861697046/1207405733667410051
-    - 愚直に部分配列を全て紙に書き出してみた。全部で15通りある。
-    - コードに変換する
+    - 愚直に部分配列を全て紙に書き出してみた。
+        - [5, 4, -1, 7, 8] -> 全部で15通りある。
+    - コードに変換する（以下は TLE ）
         ```c++
-            class Solution {
-            public:
-                int maxSubArray(vector<int>& nums) {
-                    int max = 0;
-                    for (int i = 0; i < nums.size(); i++) {
-                        for (int j = i; j < nums.size(); j++) {
-                            int current_sum = sumSubArray(nums, i, j);
-                            max = std::max(max, current_sum);
-                        }
+        class Solution {
+        public:
+            int maxSubArray(vector<int>& nums) {
+                if (nums.empty()) {
+                    return 0;
+                }
+                int max = nums[0];
+                for (int i = 0; i < nums.size(); i++) {
+                    for (int j = i; j < nums.size(); j++) {
+                        int current_sum = sumSubArray(nums, i, j);
+                        max = std::max(max, current_sum);
                     }
-                    return max;
+                }
+                return max;
+            }
+
+        private:
+            int sumSubArray(vector<int>& nums, int left, int right) {
+                int sum = 0;
+                for (int i = left; i <= right; i++) {
+                    sum += nums[i];
+                }
+                return sum;
+            }
+        };
+        ```
+
+
+        ```c++
+        class Solution {
+        public:
+            int maxSubArray(vector<int>& nums) {
+                if (nums.empty()) {
+                    return 0;
                 }
 
-            private:
-                int sumSubArray(vector<int>& nums, int i, int j) {
-                    int sum = nums[i];
-                    for (int i = i; i < j; i++) {
-                        sum += nums[i];
+                int max_sum = nums[0];
+                int current_sum = nums[0];
+                for (int i = 1; i < nums.size(); i++) {
+                    int current_sum = nums[i];
+                    for (int j = i; j < nums.size(); j++) {
+                        current_sum = sumSubArray(nums, int left, int right);
                     }
-                    return sum;
                 }
-            };
+            }
+        };
         ```
+
+    > 素朴な解法から始めて、効率化 & コードを洗練させていくイメージですかね
+
+    自分もこの考え方だった。そうではなくて、
+
+    > 東京から新宿まで移動してくれと言われたら、中央線もあれば、丸ノ内線もあれば、タクシーを拾ってもいいし、自分で運転してもいいし、歩いていってもいいじゃないですか。これくらいの幅を持って見ていて、その中には愚直なのもあれば、短いのもあれば、速いのもあれば、遅いのもあり、色々なバランスを見て、今日はこれくらいにしておくかな、くらいの感覚で選んでいます。
+
+    良いもの、悪いもの色んな手段を考えられるようになること、評価の基準によってその中からどれかを選べるようになること。
 
 
