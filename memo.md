@@ -82,8 +82,11 @@ public:
 
 コメント集を読む。
 - https://discord.com/channels/1084280443945353267/1206101582861697046/1207405733667410051
-    - 愚直に部分配列を全て紙に書き出してみた。
-        - [5, 4, -1, 7, 8] -> 全部で15通りある。
+    - 愚直に部分配列を全て紙に書き出してみた。入力配列 [5, 4, -1, 7, 8]
+        - 配列の頭から順番に部分配列を作って、合計値を求める
+            - 全部で15通りある。
+            - 合計値が最も大きい部分配列を探す -> [5, 4, -1, 7, 8] sum 23
+
     - コードに変換する（以下は TLE ）
         ```c++
         class Solution {
@@ -113,33 +116,42 @@ public:
         };
         ```
 
+## step 2
+    前の合計値の計算を繰り返しててとても非効率。一つ前の合計値を覚えておいて現在地の値を足せば楽に合計値が導き出せる。
 
-        ```c++
-        class Solution {
-        public:
-            int maxSubArray(vector<int>& nums) {
-                if (nums.empty()) {
-                    return 0;
-                }
-
-                int max_sum = nums[0];
-                int current_sum = nums[0];
-                for (int i = 1; i < nums.size(); i++) {
-                    int current_sum = nums[i];
-                    for (int j = i; j < nums.size(); j++) {
-                        current_sum = sumSubArray(nums, int left, int right);
-                    }
-                }
+    ```c++
+    class Solution {
+    public:
+        int maxSubArray(vector<int>& nums) {
+            if (nums.empty()) {
+                return 0;
             }
-        };
-        ```
 
+            vector<int> subarray_sums(nums.size(), 0);
+            subarray_sums[0] = nums[0];
+            for (int i = 1; i < nums.size(); i++) {
+                subarray_sums[i] = std::max(subarray_sums[i - 1] + nums[i], nums[i]);
+            }
+
+            return *std::max_element(subarray_sums.begin(), subarray_sums.end());
+        }
+    };
+    ```
+
+    Time complexity: O(n) に改善。
+    10^5 / 10^8 = 1 ms
+
+    先頭はその値が合計値なのでループの開始位置を1にする。
+
+        
+- https://discord.com/channels/1084280443945353267/1206101582861697046/1207405733667410051
     > 素朴な解法から始めて、効率化 & コードを洗練させていくイメージですかね
 
     自分もこの考え方だった。そうではなくて、
 
     > 東京から新宿まで移動してくれと言われたら、中央線もあれば、丸ノ内線もあれば、タクシーを拾ってもいいし、自分で運転してもいいし、歩いていってもいいじゃないですか。これくらいの幅を持って見ていて、その中には愚直なのもあれば、短いのもあれば、速いのもあれば、遅いのもあり、色々なバランスを見て、今日はこれくらいにしておくかな、くらいの感覚で選んでいます。
 
-    良いもの、悪いもの色んな手段を考えられるようになること、評価の基準によってその中からどれかを選べるようになること。
+    色んな手段を考えられるようになること、評価の基準によって最適なものをその中から選べるようになること。計算速度が遅いものが必ずしも悪いとは限らない。
 
-
+## step 3
+3回連続 pass
