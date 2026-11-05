@@ -55,7 +55,8 @@ public:
 他の方の step 1 をいくつか読んでいて、自分だけ思考回路がずれている気がした。DP 的な考え方ができていないと思う。
 
 - https://github.com/miyataka/coding-practice/pull/31
-    step 1 参考
+    - step 1 参考
+        - if (i != 0) は i がマイナスはあり得ないので、「0じゃないとき」から「0よりも大きいとき」となるように条件式を変更（ j も同様）
     
 ```c++
 class Solution {
@@ -64,23 +65,22 @@ public:
         vector<vector<int>> path_nums(m, vector<int>(n, 0));
 
         for (int i = 0; i < m; i++) {
+            if (i == 0) {
+                path_nums[0][0] = 1;
+            }
             for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0) {
-                    path_nums[i][j] = 1;
-                    continue;
-                }
-
-                int top = 0;
-                int left = 0;
+                int up = 0, left = 0;
                 if (i > 0) {
-                    top = path_nums[i - 1][j];
+                    up = path_nums[i - 1][j];
                 }
 
                 if (j > 0) {
                     left = path_nums[i][j - 1];
                 }
 
-                path_nums[i][j] = top + left;
+                if (up + left > 0) {
+                    path_nums[i][j] = up + left;
+                }
             }
         }
 
@@ -95,3 +95,35 @@ Time complexity: O(mn)
     10^4 / 10^8 = 0.4 ms
 Space complexity: O(mn)
     10^4 * 4 = 40KB
+
+## step 2
+- https://github.com/miyataka/coding-practice/pull/31/
+    - step 3 参考
+        - 番兵的な解き方になるのか。if がないのでシンプルに見える。番兵を使う発想は自分にはなかったので勉強になる。こっちの方が、紙に書いたとき番兵を使ったりしないので素直ではない気がするけど、一度理解してしまえば書きやすい。
+
+```c++
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> path_count(m+1, vector<int>(n+1, 0));
+
+        path_count[1][0] = 1;
+
+        for (int row = 1; row < m+1; row++) {
+            for (int col = 1; col < n+1; col++) {
+                path_count[row][col] = path_count[row-1][col] + path_count[row][col-1];
+            }
+        }
+
+        return path_count[m][n];
+    }
+};
+```
+
+Time complexity: O(mn)
+    10^4 / 10^8 = 0.4 ms
+Space complexity: O(mn)
+    10^4 * 4 = 40KB
+
+## step 3
+step 2 の方法で3回連続 pass
