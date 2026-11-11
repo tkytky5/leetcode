@@ -35,6 +35,7 @@ public:
 };
 ```
 
+## step 2
 わからないので他の方のコードを見る。
 
 - https://github.com/skypenguins/coding-practice/pull/45/changes
@@ -68,19 +69,26 @@ public:
 - https://github.com/Mike0121/LeetCode/pull/47/
     - メモ化再帰
     - フィボナッチ数列
-    - 以下のやり方では MLE
+    - 後ろから最大値を探索する
+
+- Time complexity: O(n)
+- Space complexity: O(n)
 
 ```c++
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        map<int, int> memo;
+        unordered_map<int, int> memo;
 
         return robHelper(0, nums, memo);
     }
 
 private:
-    int robHelper(int i, vector<int>& nums, map<int, int> memo) {
+    int robHelper(
+        int i,
+        vector<int>& nums,
+        unordered_map<int, int>& memo
+    ) {
         if (i >= nums.size()) {
             return 0;
         }
@@ -99,3 +107,6 @@ private:
     }
 };
 ```
+
+## step 3
+DP メモ化再帰でそれぞれ3回連続 pass
