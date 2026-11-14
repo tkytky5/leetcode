@@ -110,3 +110,44 @@ private:
 
 ## step 3
 DP メモ化再帰でそれぞれ3回連続 pass
+
+
+## step 4
+
+> ```c++ 
+>    std::vector<int> memo(nums.size(), kNotChecked);
+> ```
+
+> としたほうが、ハッシュの計算や、バケットインデックスの計算、要素ごとのメモリの確保と解放が無い分、シンプルで速くなると思いました。
+
+step 2 のメモ化再帰で以下の指摘を受けた。
+ハッシュの計算、バケットインデックスの計算、要素ごとのメモリの確保と解放、それぞれ知らなかったので調べた。
+
+- ハッシュの計算
+https://qiita.com/danieltanaka/items/3ae953bbf9f2cb448ec0
+
+
+- https://github.com/h-masder/Arai60/pull/38
+    - 番兵を2つ置いて DP で解く。
+    - 配列でメモ化する。
+
+- Time complexity: O(n)
+- Space complexity: O(n)
+
+```c++
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        vector<int> memo(nums.size() + 2, 0); // memo[i] = rob([:i - 1])
+
+        for (int i = 2; i < memo.size(); i++) {
+            int rob = nums[i - 2] + memo[i - 2];
+            int max_prev_house = memo[i - 1];
+
+            memo[i] = std::max(max_prev_house, rob);
+        }
+
+        return memo[memo.size() - 1];
+    }
+};
+```
